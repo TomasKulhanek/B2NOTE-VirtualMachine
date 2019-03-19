@@ -30,3 +30,9 @@ chmod ugo+rwx /srv/b2note
 chmod go+rx /home/vagrant
 chown apache:apache /srv/b2note
 
+#
+yum -y install git
+git clone https://github.com/EUDAT-B2NOTE/b2note.git
+yum -y install django mongodb
+
+

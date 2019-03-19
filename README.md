@@ -16,3 +16,33 @@ vagrant up
 ```
 
 Port forwarding is done from guest VM 80 to host 8080 by default. After that B2NOTE is available at http://localhost:8080
+
+# manual installation
+
+- install python pip 
+`sudo yum -y install python-pip`
+- install virtualenv
+`sudo pip install virtualenv`
+- clone b2note repository
+`git clone https://github.com/EUDAT-B2NOTE/b2note.git`
+- create virtualenv, cd into b2note repo
+```
+cd b2note
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+- install mongodb
+`sudo yum -y install mongodb-server`
+- start mongodb
+`sudo service mongod start`
+
+TODO 
+
+- create mongodb database
+- set MONGODB_NAME before
+- run django server
+`./manage.py runserver`
+
+
+
