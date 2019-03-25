@@ -5,10 +5,9 @@ service rsyslog restart
 
 # install apache
 
-chown -R apache:apache /var/www/html
-chmod -R 644 /var/www/html
-find /var/www/html -type d -exec chmod ugo+rx {} \;
-
+#chown -R apache:apache /var/www/html
+#chmod -R 644 /var/www/html
+#find /var/www/html -type d -exec chmod ugo+rx {} \;
 
 yum -y install epel-release
 yum-config-manager --save --setopt=epel/x86_64/metalink.skip_if_unavailable=true
@@ -25,6 +24,7 @@ firewall-cmd --reload
 
 # disable selinux, by default enabled, httpd cannot initiate connection otherwise etc.
 setenforce 0
+sed -i -e "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
 ## install mongodb
 yum -y install mongodb
@@ -47,7 +47,7 @@ chown apache:apache /srv/b2note
 yum -y install git
 git clone https://github.com/EUDAT-B2NOTE/b2note.git
 #yum -y install django mongodb
-yum -y install pip
+yum -y install python-pip
 pip install --upgrade pip
 cd b2note
 pip install virtualenv
@@ -84,16 +84,55 @@ pip install mongoengine django-countries oic
 ./manage.py syncdb --noinput
 # sqlite3 users.sqlite3
 
-./manage.py syncdb --database=users --noinput
+yum -y install sqlite
 
-cat <<EOT >> /etc/rc.local
-bash /vagrant/runserver.sh 
+./manage.py syncdb --database=users --noinput
+# create run script
+cat <<EOT > /home/vagrant/b2note/runserver.sh
+#!/usr/bin/env bash
+source /home/vagrant/b2note/venv/bin/activate
+cd /home/vagrant/b2note/
+/home/vagrant/b2note/manage.py runserver
+EOT
+chmod +x /home/vagrant/b2note/runserver.sh
+chown -R vagrant:vagrant /home/vagrant/b2note
+
+# start django after boot
+
+cat <<EOT > /etc/systemd/system/b2note.service
+[Unit]
+Description=B2NOTE Service
+After=autofs.service
+
+[Service]
+Type=simple
+#EnvironmentFile=/home/vagrant/b2note/venv/bin/activate
+PIDFile=/var/run/westlife-metadata.pid
+User=vagrant
+ExecStart=/home/vagrant/b2note/runserver.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=b2note
+WorkingDirectory=/home/vagrant/b2note/
+
+[Install]
+WantedBy=multi-user.target
+EOT
+chown vagrant:vagrant /tmp/b2note.log
+# set debug
+sed -i -e "s/^DEBUG =.*$/DEBUG = True/g" /home/vagrant/b2note/b2note_devel/settings.py
+# start django now
+systemctl start b2note
+systemctl enable b2note
+
+
+# apache proxy to django
+cat <<EOT >> /etc/httpd/conf.d/b2note.conf
+<Location />
+  ProxyPass http://127.0.0.1:8000/
+  ProxyPassReverse http://127.0.0.1:8000/
+</Location>
 EOT
 
-
-
-
-
-
-
+service httpd restart
 
