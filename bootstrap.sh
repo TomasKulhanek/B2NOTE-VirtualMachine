@@ -80,6 +80,10 @@ pip install git+https://github.com/django-nonrel/django@nonrel-1.5
 pip install git+https://github.com/django-nonrel/djangotoolbox
 pip install git+https://github.com/django-nonrel/mongodb-engine
 pip install mongoengine django-countries oic
+# fix issue https://stackoverflow.com/questions/35254975/import-error-no-module-named-bson
+# pip uninstall -y bson
+pip uninstall -y pymongo
+pip install pymongo
 
 ./manage.py syncdb --noinput
 # sqlite3 users.sqlite3
@@ -88,18 +92,25 @@ yum -y install sqlite
 
 ./manage.py syncdb --database=users --noinput
 # create run script
-cat <<EOT > /home/vagrant/b2note/runserver.sh
+cat <<EOT > /home/vagrant/b2note/runui.sh
 #!/usr/bin/env bash
 source /home/vagrant/b2note/venv/bin/activate
 cd /home/vagrant/b2note/
-/home/vagrant/b2note/manage.py runserver
+./manage.py runserver
 EOT
-chmod +x /home/vagrant/b2note/runserver.sh
+cat <<EOT > /home/vagrant/b2note/runapi.sh
+#!/usr/bin/env bash
+source /home/vagrant/b2note/venv/bin/activate
+cd /home/vagrant/b2note/
+python b2note_api/b2note_api.py
+EOT
+chmod +x /home/vagrant/b2note/runui.sh
+chmod +x /home/vagrant/b2note/runapi.sh
 chown -R vagrant:vagrant /home/vagrant/b2note
 
 # start django after boot
 
-cat <<EOT > /etc/systemd/system/b2note.service
+cat <<EOT > /etc/systemd/system/b2noteapi.service
 [Unit]
 Description=B2NOTE Service
 After=autofs.service
@@ -107,12 +118,31 @@ After=autofs.service
 [Service]
 Type=simple
 #EnvironmentFile=/home/vagrant/b2note/venv/bin/activate
-PIDFile=/var/run/westlife-metadata.pid
+PIDFile=/var/run/b2noteapi.pid
 User=vagrant
-ExecStart=/home/vagrant/b2note/runserver.sh
+ExecStart=/home/vagrant/b2note/runapi.sh
 StandardOutput=syslog
 StandardError=syslog
-SyslogIdentifier=b2note
+SyslogIdentifier=b2noteapi
+WorkingDirectory=/home/vagrant/b2note/
+
+[Install]
+WantedBy=multi-user.target
+EOT
+cat <<EOT > /etc/systemd/system/b2noteui.service
+[Unit]
+Description=B2NOTE Service
+After=autofs.service
+
+[Service]
+Type=simple
+#EnvironmentFile=/home/vagrant/b2note/venv/bin/activate
+PIDFile=/var/run/b2noteui.pid
+User=vagrant
+ExecStart=/home/vagrant/b2note/runui.sh
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=b2noteui
 WorkingDirectory=/home/vagrant/b2note/
 
 [Install]
@@ -122,16 +152,18 @@ chown vagrant:vagrant /tmp/b2note.log
 # set debug
 sed -i -e "s/^DEBUG =.*$/DEBUG = True/g" /home/vagrant/b2note/b2note_devel/settings.py
 # start django now
-systemctl start b2note
-systemctl enable b2note
-
+systemctl start b2noteui
+systemctl enable b2noteui
+# start eve api now
+systemctl start b2noteapi
+systemctl enable b2noteapi
 
 # apache proxy to django
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
-<Location />
-  ProxyPass http://127.0.0.1:8000/
-  ProxyPassReverse http://127.0.0.1:8000/
-</Location>
+  ProxyPass /api http://127.0.0.1:5000
+  ProxyPassReverse /api http://127.0.0.1:5000
+  ProxyPass / http://127.0.0.1:8000
+  ProxyPassReverse / http://127.0.0.1:8000
 EOT
 
 service httpd restart
