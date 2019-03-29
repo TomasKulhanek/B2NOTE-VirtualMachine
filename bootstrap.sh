@@ -27,12 +27,12 @@ setenforce 0
 sed -i -e "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
 ## install mongodb
-yum -y install mongodb
-systemctl start mongodb
-systemctl enable mongodb
+yum -y install mongodb mongodb-server
+systemctl start mongod
+systemctl enable mongod
 
 # put initial db into mongodb
-mongo admin bootstrapmongo.js
+mongo admin /vagrant/bootstrapmongo.js
 
 # create b2note app dir
 mkdir /srv/b2note
@@ -158,12 +158,21 @@ systemctl enable b2noteui
 systemctl start b2noteapi
 systemctl enable b2noteapi
 
+# datasetview
+
+git clone https://bitbucket.org/tkulhanek/b2note-datasetview.git
 # apache proxy to django
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
+Alias "/datasetview" "/home/vagrant/b2note-datasetview/dist"
+<Directory "/home/vagrant/b2note-datasetview/dist">
+  Require all granted
+  Options FollowSymLinks IncludesNOEXEC
+  AllowOverride All
+</Directory>
   ProxyPass /api http://127.0.0.1:5000
   ProxyPassReverse /api http://127.0.0.1:5000
-  ProxyPass / http://127.0.0.1:8000
-  ProxyPassReverse / http://127.0.0.1:8000
+  ProxyPass /ui http://127.0.0.1:8000
+  ProxyPassReverse /ui http://127.0.0.1:8000
 EOT
 
 service httpd restart
