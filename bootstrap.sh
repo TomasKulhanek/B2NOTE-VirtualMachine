@@ -159,8 +159,9 @@ systemctl start b2noteapi
 systemctl enable b2noteapi
 
 # datasetview
-
+cd /home/vagrant
 git clone https://bitbucket.org/tkulhanek/b2note-datasetview.git
+chown -R vagrant:vagrant /home/vagrant/b2note-datasetview
 # apache proxy to django
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
 Alias "/datasetview" "/home/vagrant/b2note-datasetview/dist"
@@ -176,4 +177,10 @@ Alias "/datasetview" "/home/vagrant/b2note-datasetview/dist"
 EOT
 
 service httpd restart
+
+# install nodejs v >8.x required by aurelia
+curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+yum -y install nodejs
+npm install aurelia-cli -g --quiet
+
 
