@@ -160,12 +160,12 @@ systemctl enable b2noteapi
 
 # datasetview
 cd /home/vagrant
-git clone https://bitbucket.org/tkulhanek/b2note-datasetview.git
-chown -R vagrant:vagrant /home/vagrant/b2note-datasetview
+git clone https://github.com/e-sdf/B2NOTE-DatasetView
+chown -R vagrant:vagrant /home/vagrant/B2NOTE-DatasetView
 # apache proxy to django
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
-Alias "/datasetview" "/home/vagrant/b2note-datasetview/dist"
-<Directory "/home/vagrant/b2note-datasetview/dist">
+Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
+<Directory "/home/vagrant/B2NOTE-DatasetView/dist">
   Require all granted
   Options FollowSymLinks IncludesNOEXEC
   AllowOverride All
@@ -174,6 +174,23 @@ Alias "/datasetview" "/home/vagrant/b2note-datasetview/dist"
   ProxyPassReverse /api http://127.0.0.1:5000
   ProxyPass /ui http://127.0.0.1:8000
   ProxyPassReverse /ui http://127.0.0.1:8000
+
+  SSLProxyEngine On
+  SSLProxyVerify none
+  SSLProxyCheckPeerCN off
+  SSLProxyCheckPeerName off
+  SSLProxyCheckPeerExpire off
+# proxy to pcloud WEBDAV  
+<Location "/pcloud">
+  ProxyPass "https://webdav.pcloud.com"
+  Header add "Access-Control-Allow-Origin" "*"
+</Location>
+
+# proxy to b2drop WEBDAV  
+<Location "/b2drop">
+  ProxyPass "https://b2drop.eudat.eu/remote.php/webdav"
+  Header add "Access-Control-Allow-Origin" "*"
+</Location>  
 EOT
 
 service httpd restart
