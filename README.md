@@ -1,6 +1,7 @@
 # B2NOTE Virtual machine
+templates to prepare VM from scratch
 
-Vagrant template for VM with B2NOTE
+## local installation using Vagrant and Virtualbox
 
 Requirement: 
 - HW: 1 CPU, 2 GB RAM, 5-50GB disk space.
@@ -17,7 +18,7 @@ vagrant up
 
 Port forwarding is done from guest VM 80 to host 8080 by default. After that B2NOTE is available at http://localhost:8080
 
-# installation into cloud VM
+## installation into cloud VM
 
 In case your VM was prepared from templates of cloud providers (RHEL 7 derivatives are recommended, CENTOS 7, ...). Use the following procedure.
 
@@ -32,7 +33,7 @@ dos2unix bootstrap.sh
 ./bootstrap.sh
 ```
 
-# manual installation
+## manual installation
 
 - install python pip 
 `sudo yum -y install python-pip`
