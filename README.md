@@ -17,6 +17,21 @@ vagrant up
 
 Port forwarding is done from guest VM 80 to host 8080 by default. After that B2NOTE is available at http://localhost:8080
 
+# installation into cloud VM
+
+In case your VM was prepared from templates of cloud providers (RHEL 7 derivatives are recommended, CENTOS 7, ...). Use the following procedure.
+
+The following will bootstrap b2note environmnet in existing VM template.
+```bash
+mkdir /vagrant
+cd /vagrant
+wget https://raw.githubusercontent.com/e-sdf/B2NOTE-VirtualMachine/master/bootstrapmongo.js
+wget https://raw.githubusercontent.com/e-sdf/B2NOTE-VirtualMachine/master/bootstrap.sh
+dos2unix bootstrap.sh
+# you may edit b2note.conf and other settings in bootstrap.sh script before launching
+./bootstrap.sh
+```
+
 # manual installation
 
 - install python pip 
