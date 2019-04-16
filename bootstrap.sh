@@ -45,7 +45,7 @@ chown apache:apache /srv/b2note
 
 #
 yum -y install git
-git clone https://github.com/EUDAT-B2NOTE/b2note.git
+git clone https://github.com/e-sdf/b2note.git
 #yum -y install django mongodb
 yum -y install python-pip
 pip install --upgrade pip
