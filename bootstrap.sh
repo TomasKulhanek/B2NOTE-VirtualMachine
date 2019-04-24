@@ -49,11 +49,14 @@ git clone https://github.com/EUDAT-B2NOTE/b2note.git
 #yum -y install django mongodb
 yum -y install python-pip
 pip install --upgrade pip
-cd b2note
-pip install virtualenv
-virtualenv venv 
-# put settings into activate script
-cat <<EOT >> /home/vagrant/b2note/venv/bin/activate
+cd /home/vagrant
+
+#alternative Python 3 env
+#sudo yum -y install python36
+#cd /home/vagrant
+#python3 -m venv py3
+#source /home/vagrant/py3/bin/activate
+cat <<EOT >> /home/vagrant/py3/bin/activate
 # DJANGO B2NOTE variables:
 export MONGODB_NAME='b2notedb'
 export MONGODB_USR='b2note'
@@ -72,7 +75,34 @@ export SUPPORT_EMAIL_ADDR='b2note@bsc.es'
 export SUPPORT_EMAIL_PWD='YpWKaJhR'
 export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
 EOT
-source venv/bin/activate
+#pip install --upgrade pip
+#pip install django mongoengine pymongo pysolr requests django-countries eve-swagger django-simple-captcha beautifulsoup4 rdflib rdflib-jsonld
+
+# Python 2
+pip install virtualenv
+virtualenv py2 
+# put settings into activate script
+cat <<EOT >> /home/vagrant/py2/bin/activate
+# DJANGO B2NOTE variables:
+export MONGODB_NAME='b2notedb'
+export MONGODB_USR='b2note'
+export MONGODB_PWD='b2note'
+export SQLDB_NAME='/home/vagrant/b2note/users.sqlite3'
+export SQLDB_USR='b2note'
+export SQLDB_PWD='b2note'
+export VIRTUOSO_B2NOTE_USR='b2note'
+export VIRTUOSO_B2NOTE_PWD='Eudat_2016;'
+export B2NOTE_SECRET_KEY="ner-x(&1032%5gpx7wc*+(kh6+3!+qxt(t@8!^ky5t5w=@_g0j"
+export B2NOTE_PREFIX_SW_PATH='/home/vagrant/b2note'
+#export EMAIL_SUPPORT_ADDR='b2note.temp@gmail.com'
+export EMAIL_SUPPORT_ADDR='b2note-support'
+export EMAIL_SUPPORT_PWD='ysayw1fL2n'
+export SUPPORT_EMAIL_ADDR='b2note@bsc.es'
+export SUPPORT_EMAIL_PWD='YpWKaJhR'
+export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
+EOT
+cd /home/vagrant/b2note
+source /home/vagrant/py2/bin/activate
 pip install django-simple-captcha
 pip install -r requirements.txt
 pip uninstall django
@@ -81,6 +111,7 @@ pip install git+https://github.com/django-nonrel/djangotoolbox
 pip install git+https://github.com/django-nonrel/mongodb-engine
 pip install mongoengine django-countries oic
 # fix issue https://stackoverflow.com/questions/35254975/import-error-no-module-named-bson
+# fix issue import error decimal128
 # pip uninstall -y bson
 pip uninstall -y pymongo
 pip install pymongo
@@ -94,13 +125,13 @@ yum -y install sqlite
 # create run script
 cat <<EOT > /home/vagrant/b2note/runui.sh
 #!/usr/bin/env bash
-source /home/vagrant/b2note/venv/bin/activate
+source /home/vagrant/py2/bin/activate
 cd /home/vagrant/b2note/
 ./manage.py runserver
 EOT
 cat <<EOT > /home/vagrant/b2note/runapi.sh
 #!/usr/bin/env bash
-source /home/vagrant/b2note/venv/bin/activate
+source /home/vagrant/py2/bin/activate
 cd /home/vagrant/b2note/
 python b2note_api/b2note_api.py
 EOT
@@ -117,7 +148,6 @@ After=autofs.service
 
 [Service]
 Type=simple
-#EnvironmentFile=/home/vagrant/b2note/venv/bin/activate
 PIDFile=/var/run/b2noteapi.pid
 User=vagrant
 ExecStart=/home/vagrant/b2note/runapi.sh
@@ -136,7 +166,6 @@ After=autofs.service
 
 [Service]
 Type=simple
-#EnvironmentFile=/home/vagrant/b2note/venv/bin/activate
 PIDFile=/var/run/b2noteui.pid
 User=vagrant
 ExecStart=/home/vagrant/b2note/runui.sh
