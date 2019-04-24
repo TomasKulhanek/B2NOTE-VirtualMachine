@@ -45,7 +45,7 @@ chown apache:apache /srv/b2note
 
 #
 yum -y install git
-git clone https://github.com/EUDAT-B2NOTE/b2note.git
+git clone https://github.com/e-sdf/b2note.git
 #yum -y install django mongodb
 yum -y install python-pip
 pip install --upgrade pip
@@ -105,7 +105,7 @@ cd /home/vagrant/b2note
 source /home/vagrant/py2/bin/activate
 pip install django-simple-captcha
 pip install -r requirements.txt
-pip uninstall django
+pip uninstall -y django
 pip install git+https://github.com/django-nonrel/django@nonrel-1.5
 pip install git+https://github.com/django-nonrel/djangotoolbox
 pip install git+https://github.com/django-nonrel/mongodb-engine
@@ -226,6 +226,8 @@ service httpd restart
 
 # install nodejs v >8.x required by aurelia
 curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
+# remove previous nodejs installation
+yum -y remove nodejs
 yum -y install nodejs
 npm install aurelia-cli -g --quiet
 
