@@ -79,7 +79,9 @@ export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
 EOT
 source /home/vagrant/py3/bin/activate
 pip install --upgrade pip
-pip install django mongoengine pymongo pysolr requests django-countries eve-swagger django-simple-captcha beautifulsoup4 rdflib rdflib-jsonld django_mongodb_engine
+cd /home/vagrant/b2note
+pip install -r requirements.txt
+#pip install django mongoengine pymongo pysolr requests django-countries eve-swagger django-simple-captcha beautifulsoup4 rdflib rdflib-jsonld django_mongodb_engine
 #pip install git+https://github.com/django-nonrel/django@nonrel-1.5
 #pip install git+https://github.com/django-nonrel/djangotoolbox
 
