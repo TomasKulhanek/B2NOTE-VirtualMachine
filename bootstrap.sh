@@ -52,10 +52,9 @@ pip install --upgrade pip
 cd /home/vagrant
 
 #alternative Python 3 env
-#sudo yum -y install python36
-#cd /home/vagrant
-#python3 -m venv py3
-#source /home/vagrant/py3/bin/activate
+sudo yum -y install python36
+cd /home/vagrant
+python3 -m venv py3
 cat <<EOT >> /home/vagrant/py3/bin/activate
 # DJANGO B2NOTE variables:
 export MONGODB_NAME='b2notedb'
@@ -75,12 +74,15 @@ export SUPPORT_EMAIL_ADDR='b2note@bsc.es'
 export SUPPORT_EMAIL_PWD='YpWKaJhR'
 export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
 EOT
-#pip install --upgrade pip
-#pip install django mongoengine pymongo pysolr requests django-countries eve-swagger django-simple-captcha beautifulsoup4 rdflib rdflib-jsonld
+source /home/vagrant/py3/bin/activate
+pip install --upgrade pip
+pip install django mongoengine pymongo pysolr requests django-countries eve-swagger django-simple-captcha beautifulsoup4 rdflib rdflib-jsonld django_mongodb_engine
+#pip install git+https://github.com/django-nonrel/django@nonrel-1.5
+#pip install git+https://github.com/django-nonrel/djangotoolbox
 
 # Python 2
-pip install virtualenv
-virtualenv py2 
+#pip install virtualenv
+#virtualenv py2 
 # put settings into activate script
 cat <<EOT >> /home/vagrant/py2/bin/activate
 # DJANGO B2NOTE variables:
@@ -101,37 +103,46 @@ export SUPPORT_EMAIL_ADDR='b2note@bsc.es'
 export SUPPORT_EMAIL_PWD='YpWKaJhR'
 export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
 EOT
-cd /home/vagrant/b2note
-source /home/vagrant/py2/bin/activate
-pip install django-simple-captcha
-pip install -r requirements.txt
-pip uninstall -y django
-pip install git+https://github.com/django-nonrel/django@nonrel-1.5
-pip install git+https://github.com/django-nonrel/djangotoolbox
-pip install git+https://github.com/django-nonrel/mongodb-engine
-pip install mongoengine django-countries oic
+#cd /home/vagrant/b2note
+#source /home/vagrant/py2/bin/activate
+#pip install django-simple-captcha
+#pip install -r requirements.txt
+#pip uninstall -y django
+#pip install git+https://github.com/django-nonrel/django@nonrel-1.5
+#pip install git+https://github.com/django-nonrel/djangotoolbox
+#pip install git+https://github.com/django-nonrel/mongodb-engine
+#pip install mongoengine django-countries oic
 # fix issue https://stackoverflow.com/questions/35254975/import-error-no-module-named-bson
 # fix issue import error decimal128
 # pip uninstall -y bson
-pip uninstall -y pymongo
-pip install pymongo
+#pip uninstall -y pymongo
+#pip install pymongo
 
-./manage.py syncdb --noinput
+#install sqlite
+yum -y install sqlite
+#replace sqlite 3.7 to newer sqlite 3.11
+cp /vagrant/lib/sqlite-3.11/sqlite3 /usr/bin
+cp /vagrant/lib/sqlite-3.11/libsqlite3.so.0.8.6 /usr/lib64
+#check sqlite version
+python -c "import sqlite3; print(sqlite3.sqlite_version)"
+
+
+#./manage.py syncdb --noinput
+cd /home/vagrant/b2note
+./manage.py migrate --noinput
 # sqlite3 users.sqlite3
 
-yum -y install sqlite
-
-./manage.py syncdb --database=users --noinput
+./manage.py migrate --database=users --noinput
 # create run script
 cat <<EOT > /home/vagrant/b2note/runui.sh
 #!/usr/bin/env bash
-source /home/vagrant/py2/bin/activate
+source /home/vagrant/py3/bin/activate
 cd /home/vagrant/b2note/
 ./manage.py runserver
 EOT
 cat <<EOT > /home/vagrant/b2note/runapi.sh
 #!/usr/bin/env bash
-source /home/vagrant/py2/bin/activate
+source /home/vagrant/py3/bin/activate
 cd /home/vagrant/b2note/
 python b2note_api/b2note_api.py
 EOT
@@ -201,8 +212,8 @@ Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
 </Directory>
   ProxyPass /api http://127.0.0.1:5000
   ProxyPassReverse /api http://127.0.0.1:5000
-  ProxyPass /ui http://127.0.0.1:8000
-  ProxyPassReverse /ui http://127.0.0.1:8000
+  ProxyPass / http://127.0.0.1:8000
+  ProxyPassReverse / http://127.0.0.1:8000
 
   SSLProxyEngine On
   SSLProxyVerify none
@@ -230,5 +241,3 @@ curl --silent --location https://rpm.nodesource.com/setup_8.x | sudo bash -
 yum -y remove nodejs
 yum -y install nodejs
 npm install aurelia-cli -g --quiet
-
-
