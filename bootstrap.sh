@@ -27,7 +27,10 @@ setenforce 0
 sed -i -e "s/SELINUX=enforcing/SELINUX=disabled/g" /etc/selinux/config
 
 ## install mongodb
-yum -y install mongodb mongodb-server
+
+yum -y install https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-shell-4.0.9-1.el7.x86_64.rpm
+yum -y install https://repo.mongodb.org/yum/redhat/7/mongodb-org/4.0/x86_64/RPMS/mongodb-org-server-4.0.9-1.el7.x86_64.rpm
+#mongodb mongodb-server
 systemctl start mongod
 systemctl enable mongod
 
