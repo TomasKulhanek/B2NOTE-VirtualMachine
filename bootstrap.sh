@@ -48,7 +48,10 @@ chown apache:apache /srv/b2note
 
 #
 yum -y install git
-git clone https://github.com/e-sdf/b2note.git
+cd /home/vagrant
+git clone https://github.com/EUDAT-B2NOTE/b2note.git
+cd b2note
+git checkout development
 #yum -y install django mongodb
 yum -y install python-pip
 pip install --upgrade pip
@@ -215,10 +218,10 @@ Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
   Options FollowSymLinks IncludesNOEXEC
   AllowOverride All
 </Directory>
-  ProxyPass /api http://127.0.0.1:5000
-  ProxyPassReverse /api http://127.0.0.1:5000
-  ProxyPass / http://127.0.0.1:8000
-  ProxyPassReverse / http://127.0.0.1:8000
+  ProxyPass /api http://127.0.0.1:5000/
+  ProxyPassReverse /api http://127.0.0.1:5000/
+  ProxyPass / http://127.0.0.1:8000/
+  ProxyPassReverse / http://127.0.0.1:8000/
 
   SSLProxyEngine On
   SSLProxyVerify none
