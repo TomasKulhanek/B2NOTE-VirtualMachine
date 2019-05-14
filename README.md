@@ -11,7 +11,7 @@ Requirement:
 Type in your command line:
 
 ```bash
-git clone https://github.com/TomasKulhanek/B2NOTE-VirtualMachine.git
+git clone https://github.com/e-sdf/B2NOTE-VirtualMachine.git
 cd B2NOTE-VirtualMachine
 vagrant up
 ```
