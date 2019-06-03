@@ -18,6 +18,18 @@ vagrant up
 
 Port forwarding is done from guest VM 80 to host 8080 by default. After that B2NOTE is available at http://localhost:8080
 
+## Local installation of Development environment
+
+go into the directory with development option and start vagrant script from there.
+
+E.g. for development branch on python 3
+
+```bash
+git clone https://github.com/TomasKulhanek/B2NOTE-VirtualMachine.git
+cd B2NOTE-VirtualMachine/b2note-vm-py3
+vagrant up
+```
+
 ## installation into cloud VM
 
 In case your VM was prepared from templates of cloud providers (RHEL 7 derivatives are recommended, CENTOS 7, ...). Use the following procedure.
