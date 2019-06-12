@@ -275,16 +275,24 @@ git clone https://github.com/e-sdf/B2NOTE-DatasetView
 chown -R vagrant:vagrant /home/vagrant/B2NOTE-DatasetView
 # apache proxy to django and eve, directory to datasetview
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
+Alias "/b2note" "/home/vagrant/b2note/b2note_app/dist"
+<Directory "/home/vagrant/b2note/b2note_app/dist">
+  Header set Access-Control-Allow-Origin "*"
+  Require all granted
+  Options FollowSymLinks IncludesNOEXEC
+  AllowOverride All
+</Directory>
+
 Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
 <Directory "/home/vagrant/B2NOTE-DatasetView/dist">
   Require all granted
   Options FollowSymLinks IncludesNOEXEC
   AllowOverride All
 </Directory>
-  ProxyPass /api http://127.0.0.1:5000/
-  ProxyPassReverse /api http://127.0.0.1:5000/
-  ProxyPass / http://127.0.0.1:8000/
-  ProxyPassReverse / http://127.0.0.1:8000/
+  ProxyPass /api http://127.0.0.1:5000
+  ProxyPassReverse /api http://127.0.0.1:5000
+  ProxyPass / http://127.0.0.1:8000
+  ProxyPassReverse / http://127.0.0.1:8000
 
   SSLProxyEngine On
   SSLProxyVerify none
