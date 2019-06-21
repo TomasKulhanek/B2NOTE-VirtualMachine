@@ -4,7 +4,8 @@
 if [[ ${B2NOTE_PY3} && ${B2NOTE_PY3} -eq "1" ]] 
 then 
 #alternative Python 3 env
-sudo yum -y install python36
+sudo yum -y install python36 python36-devel
+#python36-devel required by pip mod_wsgi
 cd /home/vagrant
 python3 -m venv py3
 cat <<EOT >> /home/vagrant/py3/bin/activate

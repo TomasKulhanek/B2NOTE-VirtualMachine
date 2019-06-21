@@ -96,6 +96,9 @@ chown -R vagrant:vagrant /home/vagrant/B2NOTE-DatasetView
 fi
 # apache proxy to django and eve, directory to datasetview
 cat <<EOT >> /etc/httpd/conf.d/b2note.conf
+LoadModule wsgi_module "/home/vagrant/py3/lib64/python3.6/site-packages/mod_wsgi/server/mod_wsgi-py36.cpython-36m-x86_64-linux-gnu.so"
+WSGIPythonHome "/home/vagrant/py3"
+
 Alias "/b2note" "/home/vagrant/b2note/b2note_app/dist"
 <Directory "/home/vagrant/b2note/b2note_app/dist">
   Header set Access-Control-Allow-Origin "*"
