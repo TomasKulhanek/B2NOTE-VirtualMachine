@@ -5,7 +5,7 @@ yum -y remove nodejs
 yum -y install nodejs
 npm install aurelia-cli -g --quiet
 
-echo Testing B2Note, if all tests PASSED, then B2NOTE is installed correctly
+echo Testing B2Note. If all tests PASS, then B2NOTE is installed correctly
 cd /home/vagrant/b2note/b2note_api
 python -m unittest
 echo Frontend APP UI unit tests
