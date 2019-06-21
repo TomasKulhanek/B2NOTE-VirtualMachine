@@ -111,7 +111,7 @@ Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
   AllowOverride All
 </Directory>
 
-WSGIDaemonProcess b2note_api user=vagrant group=vagrant processes=1 threads=5 python-home=/home/vagrant/py3-dev python-path=/home/vagrant/b2note/b2note_api
+WSGIDaemonProcess b2note_api user=vagrant group=vagrant processes=1 threads=5 python-home=/home/vagrant/py3 python-path=/home/vagrant/b2note/b2note_api
 WSGIPassAuthorization On
 WSGIScriptAlias /api /home/vagrant/b2note/b2note_api/api.wsgi
 
