@@ -13,7 +13,7 @@ yum -y install epel-release
 yum-config-manager --save --setopt=epel/x86_64/metalink.skip_if_unavailable=true
 yum repolist
 
-yum -y install httpd
+yum -y install httpd mod_wsgi
 
 systemctl start httpd
 systemctl enable httpd
