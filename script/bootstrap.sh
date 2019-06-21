@@ -289,10 +289,23 @@ Alias "/datasetview" "/home/vagrant/B2NOTE-DatasetView/dist"
   Options FollowSymLinks IncludesNOEXEC
   AllowOverride All
 </Directory>
-  ProxyPass /api http://127.0.0.1:5000
-  ProxyPassReverse /api http://127.0.0.1:5000
-  ProxyPass / http://127.0.0.1:8000
-  ProxyPassReverse / http://127.0.0.1:8000
+
+WSGIDaemonProcess b2note_api user=vagrant group=vagrant processes=1 threads=5 python-home=/home/vagrant/py3-dev python-path=/home/vagrant/b2note/b2note_api
+WSGIPassAuthorization On
+WSGIScriptAlias /api /home/vagrant/b2note/b2note_api/api.wsgi
+
+    <Directory /home/vagrant/b2note/b2note_api>
+        Require all granted
+        WSGIProcessGroup b2note_api
+        WSGIApplicationGroup %{GLOBAL}
+        Order allow,deny
+	Allow from all
+    </Directory>
+
+  # ProxyPass /api http://127.0.0.1:5000
+  # ProxyPassReverse /api http://127.0.0.1:5000
+  # ProxyPass / http://127.0.0.1:8000
+  # ProxyPassReverse / http://127.0.0.1:8000
 
   SSLProxyEngine On
   SSLProxyVerify none
