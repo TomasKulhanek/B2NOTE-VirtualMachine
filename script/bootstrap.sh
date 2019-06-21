@@ -8,8 +8,17 @@
 # B2NOTE_V2=1 # will set b2note v2 specifics
 # B2NOTE_DATASETVIEW = 1 # configure b2note datasetview poc 
 
-. ./bootstrap-1server.sh
-. ./bootstrap-2python2.sh
-. ./bootstrap-3python3.sh
-. ./bootstrap-4daemon.sh
-. ./bootstrap-5js.sh
+# define following variables in order to configure b2note with b2access/google oauth
+# GAUTH_CLIENT_ID=''
+# GAUTH_CLIENT_SECRET=''
+# GAUTH_B2NOTE_SECRET_KEY=''
+# B2ACCESS_CLIENT_ID=''
+# B2ACCESS_CLIENT_SECRET=''
+# B2ACCESS_REDIRECT_URI=''
+yum -y install dos2unix
+dos2unix /vagrant/script/*.sh
+. /vagrant/script/bootstrap-1server.sh
+. /vagrant/script/bootstrap-2python2.sh
+. /vagrant/script/bootstrap-3python3.sh
+. /vagrant/script/bootstrap-4daemon.sh
+. /vagrant/script/bootstrap-5js.sh
