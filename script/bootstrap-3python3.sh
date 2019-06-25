@@ -39,7 +39,7 @@ export B2ACCESS_REDIRECT_URI='${B2ACCESS_REDIRECT_URI}'
 EOT
 source /home/vagrant/py3/bin/activate
 pip install --upgrade pip
-cd /home/vagrant/b2note
+cd /home/vagrant/b2note/b2note_api
 pip install -r requirements.txt
 PY_ENV=py3
 #install sqlite
