@@ -13,7 +13,7 @@ yum -y install epel-release
 yum-config-manager --save --setopt=epel/x86_64/metalink.skip_if_unavailable=true
 yum repolist
 
-yum -y install httpd httpd-devel
+yum -y install httpd
 #mod_wsgi required by b2note_api
 #httpd-devel required by pip mod_wsgi 
 
