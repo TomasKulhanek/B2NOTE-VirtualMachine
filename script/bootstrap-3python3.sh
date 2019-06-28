@@ -10,9 +10,9 @@ cd /home/vagrant
 python3 -m venv py3
 cat <<EOT >> /home/vagrant/py3/bin/activate
 # DJANGO B2NOTE variables:
-export MONGODB_NAME='b2notedb'
-export MONGODB_USR='b2note'
-export MONGODB_PWD='b2note'
+export MONGODB_NAME='${MONGODB_NAME}'
+export MONGODB_USR='${MONGODB_USR}'
+export MONGODB_PWD='${MONGODB_PWD}'
 export SQLDB_NAME='/home/vagrant/b2note/users.sqlite3'
 export SQLDB_USR='b2note'
 export SQLDB_PWD='b2note'
@@ -64,9 +64,9 @@ then
   echo configuring httpd env variables
 cat <<EOT >> /etc/sysconfig/httpd
 # B2NOTE variables:
-MONGODB_NAME='b2notedb'
-MONGODB_USR='b2note'
-MONGODB_PWD='b2note'
+MONGODB_NAME='${MONGODB_NAME}'
+MONGODB_USR='${MONGODB_USR}'
+MONGODB_PWD='${MONGODB_PWD}'
 GAUTH_CLIENT_ID='${GAUTH_CLIENT_ID}'
 GAUTH_CLIENT_SECRET='${GAUTH_CLIENT_SECRET}'
 GAUTH_BASE_URI='${GAUTH_BASE_URI}'

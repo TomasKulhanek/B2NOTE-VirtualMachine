@@ -11,8 +11,9 @@ python -m unittest
 echo Frontend APP UI unit tests
 cd ..
 cd b2note_app
+npm install -s
 au test
-echo Frontend APP UI e2e tests
-au run & sleep 10; au teste2e
-killall au
+#echo Frontend APP UI e2e tests
+#au run & sleep 10; au teste2e
+#killall au
 

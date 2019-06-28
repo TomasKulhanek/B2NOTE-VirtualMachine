@@ -1,0 +1,3 @@
+# ignore development and production settings, copy devel-sample.sh to devel.sh and fill values there
+**/devel.sh
+**/prod.sh

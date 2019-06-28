@@ -6,10 +6,11 @@ B2NOTE_V2=1 # will set b2note v2 specifics
 B2NOTE_PY3=1 # configure python 3 env
 B2NOTE_PY2=0 # configure python 2 env
 B2NOTE_DATASETVIEW=0 # configure b2note datasetview poc 
-source /vagrant/script/devel.sh
 
 yum -y install dos2unix
 dos2unix /vagrant/script/*.sh
+
+source /vagrant/script/devel.sh
 
 . /vagrant/script/bootstrap-1server.sh
 . /vagrant/script/bootstrap-2python2.sh
