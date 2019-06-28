@@ -10,6 +10,7 @@ Requirement:
 
 ## Local Installation Using Vagrant and Virtualbox
 
+### Without authentication 
 Type in your command line:
 
 ```bash
@@ -17,8 +18,20 @@ git clone https://github.com/e-sdf/B2NOTE-VirtualMachine.git
 cd B2NOTE-VirtualMachine
 vagrant up
 ```
+### With authentication
+Type in your command line:
 
-Port forwarding is done from guest VM 80 to host 8080 by default. After that B2NOTE is available at http://localhost:8080
+```bash
+git clone https://github.com/e-sdf/B2NOTE-VirtualMachine.git
+cd B2NOTE-VirtualMachine
+```
+Now copy `script/devel-sample.sh` as `script/devel.sh` and fill the client id and secrets accordingly.
+
+```bash
+vagrant up
+```
+### After installation
+After several minutes the VM is installed and configured. Port forwarding is done from guest VM 80 to host 8080 by default, reffer Vagrantfile for exact port number. After that B2NOTE is available at http://localhost:8080
 
 ## Local Installation of Development Environment
 

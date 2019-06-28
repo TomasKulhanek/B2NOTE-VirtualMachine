@@ -4,8 +4,8 @@
 if [[ ${B2NOTE_PY3} && ${B2NOTE_PY3} -eq "1" ]] 
 then 
 #alternative Python 3 env
-sudo yum -y install python36 python36-devel
-#python36-devel required by pip mod_wsgi
+sudo yum -y install python36 python36-devel httpd-devel gcc
+#python36-devel httpd-devel and gcc required by pip mod_wsgi
 cd /home/vagrant
 python3 -m venv py3
 cat <<EOT >> /home/vagrant/py3/bin/activate
@@ -18,7 +18,6 @@ export SQLDB_USR='b2note'
 export SQLDB_PWD='b2note'
 export VIRTUOSO_B2NOTE_USR='b2note'
 export VIRTUOSO_B2NOTE_PWD='b2note'
-export B2NOTE_SECRET_KEY='${B2NOTE_SECRET_KEY}'
 export B2NOTE_PREFIX_SW_PATH='/home/vagrant/b2note'
 #export EMAIL_SUPPORT_ADDR='b2note.temp@gmail.com'
 export EMAIL_SUPPORT_ADDR='b2note-support'
@@ -28,10 +27,10 @@ export SUPPORT_EMAIL_PWD='some-password'
 export SUPPORT_DEST_EMAIL='eudat-b2note-support@postit.csc.fi'
 
 export GAUTH_CLIENT_ID='${GAUTH_CLIENT_ID}'
-export GAUTH_CLIENT_SECRET='$GAUTH_CLIENT_SECRET}'
-export GAUTH_BASE_URI=http://localhost/b2note
-export GAUTH_AUTH_REDIRECT_URI=http://localhost/api/google/auth
-export GAUTH_B2NOTE_SECRET_KEY='${GAUTH_B2NOTE_SECRET_KEY}'
+export GAUTH_CLIENT_SECRET='${GAUTH_CLIENT_SECRET}'
+export GAUTH_BASE_URI='${GAUTH_BASE_URI}'
+export GAUTH_AUTH_REDIRECT_URI='${GAUTH_AUTH_REDIRECT_URI}'
+export B2NOTE_SECRET_KEY='${B2NOTE_SECRET_KEY}'
 export B2ACCESS_CLIENT_ID='${B2ACCESS_CLIENT_ID}'
 export B2ACCESS_CLIENT_SECRET='${B2ACCESS_CLIENT_SECRET}'
 export B2ACCESS_REDIRECT_URI='${B2ACCESS_REDIRECT_URI}'
@@ -69,10 +68,10 @@ MONGODB_NAME='b2notedb'
 MONGODB_USR='b2note'
 MONGODB_PWD='b2note'
 GAUTH_CLIENT_ID='${GAUTH_CLIENT_ID}'
-GAUTH_CLIENT_SECRET='$GAUTH_CLIENT_SECRET}'
-GAUTH_BASE_URI=http://localhost/b2note
-GAUTH_AUTH_REDIRECT_URI=http://localhost/api/google/auth
-GAUTH_B2NOTE_SECRET_KEY='${GAUTH_B2NOTE_SECRET_KEY}'
+GAUTH_CLIENT_SECRET='${GAUTH_CLIENT_SECRET}'
+GAUTH_BASE_URI='${GAUTH_BASE_URI}'
+GAUTH_AUTH_REDIRECT_URI='${GAUTH_AUTH_REDIRECT_URI}'
+B2NOTE_SECRET_KEY='${B2NOTE_SECRET_KEY}'
 B2ACCESS_CLIENT_ID='${B2ACCESS_CLIENT_ID}'
 B2ACCESS_CLIENT_SECRET='${B2ACCESS_CLIENT_SECRET}'
 B2ACCESS_REDIRECT_URI='${B2ACCESS_REDIRECT_URI}'
