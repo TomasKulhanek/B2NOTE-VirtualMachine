@@ -79,6 +79,16 @@ B2ACCESS_REDIRECT_URI='${B2ACCESS_REDIRECT_URI}'
 # AUTHLIB_INSECURE_TRANSPORT=true
 # CURL_CA_BUNDLE=""
 EOT
+
+# disable security check for development server
+if [[ ${B2NOTE_DEVEL} && ${B2NOTE_DEVEL} -eq "1" ]]
+then
+cat <<EOT >> /etc/sysconfig/httpd
+AUTHLIB_INSECURE_TRANSPORT=true
+CURL_CA_BUNDLE=""
+EOT
+fi
+
 fi
 
 fi
