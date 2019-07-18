@@ -75,10 +75,9 @@ B2NOTE_SECRET_KEY='${B2NOTE_SECRET_KEY}'
 B2ACCESS_CLIENT_ID='${B2ACCESS_CLIENT_ID}'
 B2ACCESS_CLIENT_SECRET='${B2ACCESS_CLIENT_SECRET}'
 B2ACCESS_REDIRECT_URI='${B2ACCESS_REDIRECT_URI}'
-# for development uncomment (b2access devel ssl cert may expire), for production comment these
+# for development uncomment following lines (b2access devel ssl cert may expire), for production comment following lines
 # AUTHLIB_INSECURE_TRANSPORT=true
 # CURL_CA_BUNDLE=""
-
 EOT
 fi
 

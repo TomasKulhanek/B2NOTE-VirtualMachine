@@ -15,5 +15,5 @@ then
     echo WARNING - default virtualenv for python 3 not detected or found at /home/vagrant/py3-* using python from path
   fi
 fi
-cd /home/vagrant/b2note
+cd /home/vagrant/b2note/b2note_api
 python b2note_api.py
